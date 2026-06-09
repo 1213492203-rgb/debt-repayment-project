@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>小红书AI文案助手</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="popup">
+    <!-- Header -->
+    <header class="header">
+      <div class="logo">
+        <span class="logo-icon">✍️</span>
+        <h1>小红书AI助手</h1>
+      </div>
+      <span class="version">v1.0</span>
+    </header>
+
+    <!-- Tabs -->
+    <nav class="tabs">
+      <button class="tab active" data-tab="title">标题生成</button>
+      <button class="tab" data-tab="content">正文撰写</button>
+      <button class="tab" data-tab="hashtag">标签推荐</button>
+    </nav>
+
+    <!-- Tab: Title Generator -->
+    <section class="tab-content active" id="tab-title">
+      <div class="form-group">
+        <label>笔记主题/关键词</label>
+        <input type="text" id="title-keywords" placeholder="例：早C晚A护肤、周末探店、穿搭分享...">
+      </div>
+      <div class="form-group">
+        <label>风格</label>
+        <select id="title-style">
+          <option value="catchy">吸睛爆款</option>
+          <option value="emotional">情感共鸣</option>
+          <option value="list">数字清单</option>
+          <option value="question">反问引导</option>
+          <option value="contrast">对比反差</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>目标人群</label>
+        <input type="text" id="title-audience" placeholder="例：25-35岁职场女性、学生党...">
+      </div>
+      <button id="generate-title" class="btn-primary">
+        <span class="btn-icon">✨</span> 生成5个标题
+      </button>
+      <div id="title-result" class="result-box hidden"></div>
+    </section>
+
+    <!-- Tab: Content Writer -->
+    <section class="tab-content" id="tab-content">
+      <div class="form-group">
+        <label>主题</label>
+        <input type="text" id="content-topic" placeholder="这篇笔记想分享什么？">
+      </div>
+      <div class="form-group">
+        <label>核心要点（每行一个）</label>
+        <textarea id="content-points" rows="4" placeholder="第一点：...
+第二点：...
+第三点：..."></textarea>
+      </div>
+      <div class="form-group">
+        <label>语气风格</label>
+        <select id="content-tone">
+          <option value="friendly">亲切分享</option>
+          <option value="professional">专业测评</option>
+          <option value="storytelling">故事叙述</option>
+          <option value="humorous">幽默活泼</option>
+        </select>
+      </div>
+      <button id="generate-content" class="btn-primary">
+        <span class="btn-icon">📝</span> 生成正文
+      </button>
+      <div id="content-result" class="result-box hidden"></div>
+    </section>
+
+    <!-- Tab: Hashtag Recommender -->
+    <section class="tab-content" id="tab-hashtag">
+      <div class="form-group">
+        <label>笔记主题</label>
+        <input type="text" id="hashtag-topic" placeholder="描述你的笔记内容...">
+      </div>
+      <div class="form-group">
+        <label>笔记类型</label>
+        <select id="hashtag-type">
+          <option value="beauty">美妆护肤</option>
+          <option value="fashion">穿搭时尚</option>
+          <option value="food">美食探店</option>
+          <option value="travel">旅行攻略</option>
+          <option value="lifestyle">生活方式</option>
+          <option value="tech">数码科技</option>
+          <option value="fitness">健身运动</option>
+          <option value="study">学习成长</option>
+        </select>
+      </div>
+      <button id="generate-hashtag" class="btn-primary">
+        <span class="btn-icon">#</span> 推荐标签
+      </button>
+      <div id="hashtag-result" class="result-box hidden"></div>
+    </section>
+
+    <!-- Premium Banner -->
+    <div class="premium-banner">
+      <div class="premium-text">
+        <span>🔒</span> 免费版每日5次·升级无限使用
+      </div>
+      <button id="upgrade-btn" class="btn-premium">
+        升级 ¥9.9/月
+      </button>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <span>剩余次数：<strong id="usage-count">5</strong></span>
+      <span>|</span>
+      <a href="#" id="feedback-link">反馈建议</a>
+    </footer>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>
