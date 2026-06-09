@@ -172,9 +172,11 @@ async def main(dry_run=False):
         return
 
     async with async_playwright() as p:
-        print("\n🚀 启动浏览器...")
+        print("\n🚀 启动真实 Chrome 浏览器...")
+        chrome_exe = r"C:/Program Files/Google/Chrome/Application/chrome.exe"
         context = await p.chromium.launch_persistent_context(
             user_data_dir=str(SESSION_DIR),
+            executable_path=chrome_exe,
             headless=False,
             args=["--disable-blink-features=AutomationControlled", "--no-sandbox"],
             viewport={"width": 1280, "height": 900},
@@ -182,7 +184,7 @@ async def main(dry_run=False):
         page = context.pages[0] if context.pages else await context.new_page()
 
         # 打开程聚宝
-        await page.goto("https://devlg.com", wait_until="networkidle", timeout=30000)
+        await page.goto("https://devlg.com", wait_until="domcontentloaded", timeout=30000)
 
         # 检查登录
         login_btn = await page.query_selector('a[href*="login"], button:has-text("登录")')

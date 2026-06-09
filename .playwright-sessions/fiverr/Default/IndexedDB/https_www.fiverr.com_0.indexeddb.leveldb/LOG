@@ -1,0 +1,27 @@
+2026/06/09-15:32:17.641 6234 Reusing MANIFEST C:\Users\Administrator\debt-repayment-project\.playwright-sessions\fiverr\Default\IndexedDB\https_www.fiverr.com_0.indexeddb.leveldb/MANIFEST-000001
+2026/06/09-15:32:17.642 6234 Recovering log #23
+2026/06/09-15:32:17.642 6234 Reusing old log C:\Users\Administrator\debt-repayment-project\.playwright-sessions\fiverr\Default\IndexedDB\https_www.fiverr.com_0.indexeddb.leveldb/000023.log 
+2026/06/09-15:32:17.642 6234 Delete type=2 #22
+2026/06/09-15:32:18.020 6234 Level-0 table #28: started
+2026/06/09-15:32:18.025 6234 Level-0 table #28: 613 bytes OK
+2026/06/09-15:32:18.026 6234 Delete type=0 #23
+2026/06/09-15:32:18.027 6234 Manual compaction at level-0 from '\x00\x0d\x00\x00\x00' @ 72057594037927935 : 1 .. '\x00\x0e\x00\x00\x00' @ 0 : 0; will stop at '\x00\x0e\x00\x00\x05' @ 312 : 1
+2026/06/09-15:32:18.027 6234 Compacting 1@0 + 1@1 files
+2026/06/09-15:32:18.028 6234 Generated table #29@0: 60 keys, 1170 bytes
+2026/06/09-15:32:18.028 6234 Compacted 1@0 + 1@1 files => 1170 bytes
+2026/06/09-15:32:18.029 6234 compacted to: files[ 0 1 1 0 0 0 0 ]
+2026/06/09-15:32:18.029 6234 Delete type=2 #28
+2026/06/09-15:32:18.030 6234 Manual compaction at level-0 from '\x00\x0e\x00\x00\x05' @ 312 : 1 .. '\x00\x0e\x00\x00\x00' @ 0 : 0; will stop at (end)
+2026/06/09-15:32:18.032 6234 Level-0 table #31: started
+2026/06/09-15:32:18.034 6234 Level-0 table #31: 494 bytes OK
+2026/06/09-15:32:18.035 6234 Delete type=2 #25
+2026/06/09-15:32:18.035 6234 Delete type=0 #27
+2026/06/09-15:32:18.035 6234 Manual compaction at level-0 from '\x00\x0e\x00\x00\x00' @ 72057594037927935 : 1 .. '\x00\x0f\x00\x00\x00' @ 0 : 0; will stop at '\x00\x0e\x00\x00\x05' @ 338 : 0
+2026/06/09-15:32:18.035 6234 Compacting 1@0 + 1@1 files
+2026/06/09-15:32:18.037 6234 Generated table #32@0: 58 keys, 1147 bytes
+2026/06/09-15:32:18.037 6234 Compacted 1@0 + 1@1 files => 1147 bytes
+2026/06/09-15:32:18.038 6234 compacted to: files[ 0 1 1 0 0 0 0 ]
+2026/06/09-15:32:18.038 6234 Delete type=2 #31
+2026/06/09-15:32:18.038 6234 Manual compaction at level-0 from '\x00\x0e\x00\x00\x05' @ 338 : 0 .. '\x00\x0f\x00\x00\x00' @ 0 : 0; will stop at (end)
+2026/06/09-15:32:18.911 5c40 Manual compaction at level-0 from '\x00\x0f\x00\x00\x00' @ 72057594037927935 : 1 .. '\x00\x10\x00\x00\x00' @ 0 : 0; will stop at (end)
+2026/06/09-15:32:18.912 5c40 Manual compaction at level-0 from '\x00\x10\x00\x00\x00' @ 72057594037927935 : 1 .. '\x00\x11\x00\x00\x00' @ 0 : 0; will stop at (end)

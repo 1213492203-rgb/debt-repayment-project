@@ -182,7 +182,7 @@ async def wait_for_login(page):
     try:
         await page.wait_for_url(
             "**/users/settings**|**/seller_dashboard**|**/manage_gigs**",
-            timeout=300000  # 5分钟超时
+            timeout=600000  # 5分钟超时
         )
         print("✅ 检测到登录成功！")
         return True
@@ -198,13 +198,13 @@ async def navigate_to_create_gig(page):
 
     # Fiverr "Create a New Gig" 页面
     create_url = "https://www.fiverr.com/sellers/onboarding/gig"
-    await page.goto(create_url, wait_until="networkidle", timeout=30000)
+    await page.goto(create_url, wait_until="domcontentloaded", timeout=60000)
 
     # 如果被重定向到登录页，说明 session 过期
     if "login" in page.url:
         print("   ⚠️ Session 已过期，需要重新登录")
         await wait_for_login(page)
-        await page.goto(create_url, wait_until="networkidle", timeout=30000)
+        await page.goto(create_url, wait_until="domcontentloaded", timeout=60000)
 
     print(f"   当前页面: {page.url}")
 
@@ -312,7 +312,7 @@ async def wait_for_user_verification(page):
             # 等待验证元素消失（验证成功）
             try:
                 await page.wait_for_selector(
-                    selector, state="detached", timeout=300000
+                    selector, state="detached", timeout=600000
                 )
                 print("   ✅ 验证完成！")
                 return True
@@ -329,7 +329,7 @@ async def wait_for_user_verification(page):
             print("\n🔐 检测到 Cloudflare 验证！请手动完成...")
             await page.wait_for_selector(
                 'iframe[src*="challenges.cloudflare.com"]',
-                state="detached", timeout=300000
+                state="detached", timeout=600000
             )
             print("   ✅ 验证完成！")
     except Exception:
@@ -358,15 +358,21 @@ async def main(dry_run=False):
         return
 
     async with async_playwright() as p:
-        # 使用持久化上下文 — 登录状态会被保存
-        print("\n🚀 启动浏览器（非隐身模式，保留登录状态）...")
+        # 使用真实 Chrome 二进制（绕过反爬检测）+ 独立 session 目录（避免锁冲突）
+        # 你会被要求登录一次，之后 session 持久保存无需重复登录
+        print("\n🚀 启动真实 Chrome 浏览器...")
+        print("   （使用你的系统 Chrome，独立 session 目录，不影响已打开的 Chrome）")
+
+        chrome_exe = r"C:/Program Files/Google/Chrome/Application/chrome.exe"
 
         context = await p.chromium.launch_persistent_context(
             user_data_dir=str(SESSION_DIR),
-            headless=False,  # 显示浏览器，方便你看到并操作
+            executable_path=chrome_exe,
+            headless=False,
             args=[
                 "--disable-blink-features=AutomationControlled",
                 "--no-sandbox",
+                "--disable-gpu",
             ],
             viewport={"width": 1280, "height": 900},
         )
@@ -375,13 +381,24 @@ async def main(dry_run=False):
 
         # 检查是否已登录
         print("\n🔍 检查 Fiverr 登录状态...")
-        await page.goto("https://www.fiverr.com/", wait_until="networkidle", timeout=30000)
+        try:
+            # 用 domcontentloaded 代替 networkidle（避免 Cloudflare 长连接导致超时）
+            await page.goto("https://www.fiverr.com/", wait_until="domcontentloaded", timeout=60000)
+        except Exception as e:
+            print(f"   ⚠️  Fiverr 连接超时: {e}")
+            print("   可能被 Cloudflare 拦截，尝试等待...")
+            await asyncio.sleep(5)
+            # 如果页面有 Cloudflare 验证，提示用户
+            cf_elem = await page.query_selector('#challenge-stage, iframe[src*="cloudflare"], #turnstile-wrapper')
+            if cf_elem:
+                print("\n🔐 Cloudflare 验证中，请在浏览器中完成验证...")
+                await asyncio.sleep(30)  # 给你30秒完成验证
 
         # 判断登录状态：如果页面有 "Sign In" 按钮，则未登录
         sign_in_btn = await page.query_selector('a[href*="login"], button:has-text("Sign in"), button:has-text("Sign In")')
         if sign_in_btn:
             print("   未登录，需要先登录")
-            await page.goto("https://www.fiverr.com/login", wait_until="networkidle", timeout=30000)
+            await page.goto("https://www.fiverr.com/login", wait_until="domcontentloaded", timeout=60000)
             await wait_for_login(page)
 
         print("   ✅ 已登录 Fiverr")
