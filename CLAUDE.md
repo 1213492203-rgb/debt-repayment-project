@@ -43,11 +43,21 @@ debt-repayment-project/
 - 所有收入记录到 PROJECT_STATUS.md
 - 多轨并行，不依赖单一收入源
 
-## 当前状态 (2026-06-09)
+## 当前状态 (2026-06-09 15:15)
 - ✅ 4个产品代码全部完成
 - ✅ 3个PPT模板(商业10页/汇报8页/简历2页) + Chrome插件.zip
 - ✅ HTML单文件版(14KB)可直接浏览器打开使用
-- ✅ Git仓库初始化(2个commit) + bypass配置完成
-- ✅ 程聚宝/Fiverr接单文案就绪
-- ⚠️ 等待用户注册：GitHub + Cloudflare + 程聚宝 + Fiverr
-- 🎯 注册完成 → 立即部署 + 发布接单
+- ✅ GitHub仓库上线: https://github.com/1213492203-rgb/debt-repayment-project
+- ✅ Cloudflare Pages部署: https://weekly-report-ai.pages.dev/
+- ✅ Chrome插件发布: GitHub Release v1.0.0
+- ✅ 程聚宝/Fiverr接单文案就绪 + 发布指南完整版
+- ✅ SSH push 配置完成（绕过 HTTPS 封锁）
+- ⚠️ 程聚宝 + Fiverr 需用户浏览器手动发布（内容已备好，见 marketing/publishing-guide.md）
+
+## 技术配置（本机持久化）
+- Git user: 1213492203-rgb / 1213492203-rgb@users.noreply.github.com
+- Git remote: git@github.com:1213492203-rgb/debt-repayment-project.git (SSH)
+- SSH key: ~/.ssh/id_ed25519 (deploy key on repo)
+- Cloudflare: wrangler 已认证，project: weekly-report-ai
+- GitHub PAT: 需每会话提供 (ghp_...)，或使用 GITHUB_TOKEN 环境变量
+- gh CLI path: /c/Program Files/GitHub CLI/gh.exe
