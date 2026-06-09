@@ -22,7 +22,7 @@ debt-repayment-project/
 │   ├── 01-weekly-report-ai/   # AI周报生成器 (Next.js 16, 含内置模板引擎)
 │   ├── 02-xhs-chrome-extension/ # Chrome插件：小红书AI文案助手
 │   │   └── xhs-content-helper-v1.0.0.zip  # 已打包，待分发
-│   └── 03-ppt-templates/      # 2个PPT模板 + 生成脚本
+│   └── 03-ppt-templates/      # 3个PPT模板 + 生成脚本
 │
 ├── marketing/
 │   └── service-listings/      # 程聚宝/Fiverr接单文案
@@ -45,7 +45,9 @@ debt-repayment-project/
 
 ## 当前状态 (2026-06-09)
 - ✅ 4个产品代码全部完成
-- ✅ 2个PPT模板 + 打包插件.zip
+- ✅ 3个PPT模板(商业10页/汇报8页/简历2页) + Chrome插件.zip
+- ✅ HTML单文件版(14KB)可直接浏览器打开使用
+- ✅ Git仓库初始化(2个commit) + bypass配置完成
 - ✅ 程聚宝/Fiverr接单文案就绪
 - ⚠️ 等待用户注册：GitHub + Cloudflare + 程聚宝 + Fiverr
 - 🎯 注册完成 → 立即部署 + 发布接单

@@ -22,10 +22,10 @@
       "AskUserQuestion(*)"
     ],
     "additionalDirectories": [
-      "c:/Users/Administrator/debt-repayment-project",
-      "c:/Users/Administrator/projects"
+      "C:/Users/Administrator/debt-repayment-project"
     ]
   },
+  "skipDangerousModePermissionPrompt": true,
   "env": {
     "SKIP_PERMISSION_PROMPT": "true"
   }
