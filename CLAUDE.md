@@ -43,21 +43,32 @@ debt-repayment-project/
 - 所有收入记录到 PROJECT_STATUS.md
 - 多轨并行，不依赖单一收入源
 
-## 当前状态 (2026-06-09 15:15)
+## 当前状态 (2026-06-09 17:45)
 - ✅ 4个产品代码全部完成
-- ✅ 3个PPT模板(商业10页/汇报8页/简历2页) + Chrome插件.zip
-- ✅ HTML单文件版(14KB)可直接浏览器打开使用
-- ✅ GitHub仓库上线: https://github.com/1213492203-rgb/debt-repayment-project
-- ✅ Cloudflare Pages部署: https://weekly-report-ai.pages.dev/
-- ✅ Chrome插件发布: GitHub Release v1.0.0
-- ✅ 程聚宝/Fiverr接单文案就绪 + 发布指南完整版
-- ✅ SSH push 配置完成（绕过 HTTPS 封锁）
-- ⚠️ 程聚宝 + Fiverr 需用户浏览器手动发布（内容已备好，见 marketing/publishing-guide.md）
+- ✅ 3个PPT模板 + Chrome插件 Release
+- ✅ GitHub: https://github.com/1213492203-rgb/debt-repayment-project
+- ✅ Cloudflare部署: https://weekly-report-ai.pages.dev/
+- ✅ 5张Fiverr Gig封面图(1280x769 PNG)已生成
+- ✅ 权限修复: 全局settings.json补全allow列表
+- ✅ Playwright+CDP自动化脚本就绪（连桌面Chrome）
+- ✅ 程聚宝自动化脚本就绪
+- ⚠️ 待发布: Fiverr 5 Gig + 程聚宝 Profile/5服务
+- 📋 醒后清单: 见 WAKE_UP.md
 
-## 技术配置（本机持久化）
-- Git user: 1213492203-rgb / 1213492203-rgb@users.noreply.github.com
-- Git remote: git@github.com:1213492203-rgb/debt-repayment-project.git (SSH)
-- SSH key: ~/.ssh/id_ed25519 (deploy key on repo)
-- Cloudflare: wrangler 已认证，project: weekly-report-ai
-- GitHub PAT: 需每会话提供 (ghp_...)，或使用 GITHUB_TOKEN 环境变量
-- gh CLI path: /c/Program Files/GitHub CLI/gh.exe
+## 自动化脚本
+```
+scripts/
+├── fill_fiverr_via_cdp.py    ★ 首选 — CDP连桌面Chrome，复用登录
+├── fill_fiverr_gigs.py         备选 — 独立Chrome
+├── fill_chengjubao.py          程聚宝自动填写
+└── generate_gig_covers.py      5张封面图生成器
+```
+运行: `python -X utf8 -u scripts/<name>.py`
+
+## 持久化配置
+- Git: 1213492203-rgb, SSH push to origin
+- SSH key: ~/.ssh/id_ed25519
+- Cloudflare: wrangler已认证, weekly-report-ai project
+- Playwright: Chromium在 ~/AppData/Local/ms-playwright/
+- Chrome: C:/Program Files/Google/Chrome/Application/chrome.exe
+- GITHUB_TOKEN: 每会话需提供(ghp_...)
