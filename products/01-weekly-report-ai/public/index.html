@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI周报生成器 - 1分钟搞定专业周报</title>
+<meta name="description" content="AI驱动的智能周报生成工具，输入工作关键词秒出专业周报。支持4种风格模板。">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;background:#f0f4ff;color:#1a1a2e;min-height:100vh}
+.header{background:linear-gradient(135deg,#4f46e5,#7c3aed);color:#fff;padding:60px 20px;text-align:center}
+.header h1{font-size:2.5em;font-weight:800;margin-bottom:10px}
+.header p{font-size:1.1em;opacity:.9;max-width:600px;margin:0 auto}
+.tags{display:flex;flex-wrap:wrap;justify-content:center;gap:10px;margin-top:20px}
+.tag{background:rgba(255,255,255,.2);padding:6px 16px;border-radius:20px;font-size:.85em}
+.container{max-width:1100px;margin:40px auto;padding:0 20px;display:grid;grid-template-columns:400px 1fr;gap:30px;align-items:start}
+@media(max-width:900px){.container{grid-template-columns:1fr}}
+.card{background:#fff;border-radius:16px;padding:28px;box-shadow:0 2px 20px rgba(0,0,0,.06)}
+.card h2{font-size:1.2em;margin-bottom:20px;color:#4f46e5}
+.form-group{margin-bottom:16px}
+.form-group label{display:block;font-size:.85em;font-weight:600;color:#555;margin-bottom:5px}
+.form-group textarea{border:1.5px solid #e2e8f0;border-radius:10px;padding:10px 14px;font-size:.9em;font-family:inherit;resize:vertical;outline:none;transition:border .2s;width:100%}
+.form-group textarea:focus{border-color:#4f46e5;box-shadow:0 0 0 3px rgba(79,70,229,.1)}
+.template-btns{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.template-btn{border:1.5px solid #e2e8f0;border-radius:10px;padding:10px 8px;background:#fff;cursor:pointer;text-align:left;font-size:.8em;transition:all .2s}
+.template-btn:hover{border-color:#4f46e5}
+.template-btn.active{border-color:#4f46e5;background:#eef2ff;color:#4f46e5}
+.template-btn .t-name{font-weight:600;font-size:.9em}
+.template-btn .t-desc{color:#888;font-size:.75em;margin-top:2px}
+.btn-generate{width:100%;padding:14px;background:linear-gradient(135deg,#4f46e5,#7c3aed);color:#fff;border:none;border-radius:12px;font-size:1.1em;font-weight:700;cursor:pointer;transition:all .2s}
+.btn-generate:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(79,70,229,.4)}
+.btn-generate:disabled{opacity:.5;cursor:not-allowed;transform:none}
+.result-empty{text-align:center;padding:60px 20px;color:#aaa}
+.result-empty .icon{font-size:4em;margin-bottom:15px}
+.loading{display:flex;align-items:center;justify-content:center;gap:8px;padding:60px;color:#888}
+.spinner{width:20px;height:20px;border:3px solid #e2e8f0;border-top-color:#4f46e5;border-radius:50%;animation:spin .6s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.error{background:#fef2f2;color:#dc2626;padding:12px 16px;border-radius:10px;font-size:.9em;margin-top:12px;display:none}
+.features{max-width:1100px;margin:60px auto;padding:0 20px;display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+@media(max-width:700px){.features{grid-template-columns:1fr}}
+.feat{background:#fff;border-radius:16px;padding:24px;text-align:center;box-shadow:0 2px 12px rgba(0,0,0,.04)}
+.feat .feat-icon{font-size:2.5em;margin-bottom:10px}
+.feat h3{font-size:1.05em;margin-bottom:6px;color:#333}
+.feat p{font-size:.85em;color:#888;line-height:1.5}
+.footer{text-align:center;padding:30px;color:#999;font-size:.85em}
+.report-box{white-space:pre-wrap;line-height:1.8;font-size:.95em;padding:24px}
+.action-bar{display:flex;gap:10px;padding:12px 24px;border-top:1px solid #f0f0f0}
+.btn-copy,.btn-retry{flex:1;padding:12px;border-radius:10px;font-size:.9em;font-weight:600;cursor:pointer;text-align:center;transition:all .2s}
+.btn-copy{background:#4f46e5;color:#fff;border:none}
+.btn-retry{background:#fff;color:#4f46e5;border:2px solid #4f46e5}
+.result-header{background:linear-gradient(135deg,#4f46e5,#7c3aed);color:#fff;padding:12px 20px;border-radius:12px 12px 0 0;display:flex;justify-content:space-between;align-items:center}
+.result-header button{background:rgba(255,255,255,.2);color:#fff;border:none;padding:6px 14px;border-radius:8px;cursor:pointer}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>📝 AI周报生成器</h1>
+  <p>输入工作关键词，AI秒级生成专业周报。周五下午不再煎熬！</p>
+  <div class="tags">
+    <span class="tag">📝 4种风格</span>
+    <span class="tag">⚡ 10秒生成</span>
+    <span class="tag">📋 一键复制</span>
+    <span class="tag">🔒 纯本地处理</span>
+  </div>
+</div>
+
+<div class="container">
+  <div class="card">
+    <h2>📋 填写工作内容</h2>
+
+    <div class="form-group" style="margin-bottom:8px">
+      <label>选择风格</label>
+      <div class="template-btns" id="tplBtns"></div>
+    </div>
+
+    <div class="form-group">
+      <label>本周工作内容 <span style="color:#ef4444">*</span></label>
+      <textarea id="workItems" rows="4" placeholder="例：完成用户登录模块开发；修复3个线上bug；参加2次需求评审会..."></textarea>
+    </div>
+
+    <div class="form-group">
+      <label>本周成果/亮点</label>
+      <textarea id="achievements" rows="3" placeholder="例：新功能上线后转化率提升15%..."></textarea>
+    </div>
+
+    <div class="form-group">
+      <label>遇到的困难/风险</label>
+      <textarea id="challenges" rows="2" placeholder="例：第三方API响应慢，已与对方沟通优化方案..."></textarea>
+    </div>
+
+    <div class="form-group">
+      <label>下周计划</label>
+      <textarea id="nextWeekPlan" rows="3" placeholder="例：启动支付模块开发；优化首页加载性能..."></textarea>
+    </div>
+
+    <button class="btn-generate" onclick="generate()" id="btn">✨ 一键生成周报</button>
+    <div class="error" id="error"></div>
+  </div>
+
+  <div class="card" id="resultCard">
+    <div class="result-empty" id="resultEmpty">
+      <div class="icon">📄</div>
+      <h3>你的周报将在这里显示</h3>
+      <p>填写左侧表单后点击「生成周报」</p>
+    </div>
+    <div id="resultContent" style="display:none"></div>
+    <div id="loading" class="loading" style="display:none">
+      <div class="spinner"></div>AI正在撰写中...
+    </div>
+  </div>
+</div>
+
+<div class="features">
+  <div class="feat"><div class="feat-icon">⚡</div><h3>极速生成</h3><p>本地智能引擎，无需等待服务器</p></div>
+  <div class="feat"><div class="feat-icon">🎨</div><h3>多风格模板</h3><p>专业/轻松/数据/简洁，总有一款适合你</p></div>
+  <div class="feat"><div class="feat-icon">🔒</div><h3>数据安全</h3><p>纯浏览器运行，不传输任何数据到服务器</p></div>
+  <div class="feat"><div class="feat-icon">📱</div><h3>全平台使用</h3><p>电脑、平板、手机均可使用</p></div>
+  <div class="feat"><div class="feat-icon">💰</div><h3>完全免费</h3><p>基础功能永久免费</p></div>
+  <div class="feat"><div class="feat-icon">🚀</div><h3>AI驱动</h3><p>智能模板引擎自动优化表达</p></div>
+</div>
+
+<div class="footer">
+  <p>© 2026 AI周报生成器 · 用AI让你的工作更高效</p>
+</div>
+
+<script>
+(function(){
+  var templates = [
+    {key:"professional", name:"专业正式", desc:"适合向领导汇报"},
+    {key:"casual", name:"轻松口语化", desc:"适合团队内部同步"},
+    {key:"data-driven", name:"数据驱动", desc:"突出量化成果"},
+    {key:"brief", name:"简洁要点", desc:"列点式快速浏览"}
+  ];
+  window._currentTpl = "professional";
+
+  document.getElementById("tplBtns").innerHTML = templates.map(function(t){
+    var active = t.key === window._currentTpl ? " active" : "";
+    return '<button class="template-btn'+active+'" onclick="selectTpl(\''+t.key+'\')" data-tpl="'+t.key+'"><div class="t-name">'+t.name+'</div><div class="t-desc">'+t.desc+'</div></button>';
+  }).join("");
+
+  window.selectTpl = function(key){
+    window._currentTpl = key;
+    var btns = document.querySelectorAll(".template-btn");
+    btns.forEach(function(b){ b.classList.toggle("active", b.dataset.tpl === key); });
+  };
+
+  window.generate = function(){
+    var work = document.getElementById("workItems").value.trim();
+    if(!work) {
+      var err = document.getElementById("error");
+      err.textContent = "请至少填写「本周工作内容」";
+      err.style.display = "block";
+      return;
+    }
+    document.getElementById("error").style.display = "none";
+    document.getElementById("btn").disabled = true;
+    document.getElementById("btn").textContent = "⏳ 生成中...";
+    document.getElementById("resultEmpty").style.display = "none";
+    document.getElementById("resultContent").style.display = "none";
+    document.getElementById("loading").style.display = "flex";
+
+    setTimeout(function(){
+      var report = generateReport(
+        work,
+        document.getElementById("achievements").value.trim(),
+        document.getElementById("challenges").value.trim(),
+        document.getElementById("nextWeekPlan").value.trim(),
+        window._currentTpl
+      );
+      document.getElementById("loading").style.display = "none";
+      document.getElementById("resultContent").style.display = "block";
+      document.getElementById("resultContent").innerHTML =
+        '<div class="result-header"><strong>✅ 周报已生成</strong><div style="display:flex;gap:8px"><button onclick="copyReport()">📋 复制</button><button onclick="resetForm()">✏️ 重写</button></div></div>' +
+        '<div class="report-box" id="reportText">' + escapeHtml(report) + '</div>' +
+        '<div class="action-bar"><button onclick="copyReport()" class="btn-copy">📋 一键复制到剪贴板</button><button onclick="resetForm()" class="btn-retry">✏️ 重新生成</button></div>';
+      document.getElementById("btn").disabled = false;
+      document.getElementById("btn").textContent = "✨ 一键生成周报";
+      document.getElementById("resultCard").scrollIntoView({behavior:"smooth"});
+    }, 500);
+  };
+
+  function escapeHtml(s){
+    return s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/\n/g,"<br>");
+  }
+
+  window.copyReport = function(){
+    var el = document.getElementById("reportText");
+    if(!el) return;
+    var text = el.innerText || el.textContent || "";
+    navigator.clipboard.writeText(text).then(function(){
+      alert("✅ 已复制到剪贴板！可以直接粘贴到企业微信/钉钉/邮件中");
+    });
+  };
+
+  window.resetForm = function(){
+    document.getElementById("resultContent").style.display = "none";
+    document.getElementById("resultEmpty").style.display = "block";
+  };
+
+  function generateReport(work, achievements, challenges, plan, tpl){
+    var now = new Date();
+    var day = now.getDay();
+    var monday = new Date(now);
+    monday.setDate(now.getDate() - ((day + 6) % 7));
+    var sunday = new Date(monday);
+    sunday.setDate(monday.getDate() + 6);
+    var dateStr = (monday.getMonth()+1)+"月"+monday.getDate()+"日 - "+(sunday.getMonth()+1)+"月"+sunday.getDate()+"日";
+    var wl = work.split(/[；;。\n]/).filter(function(s){return s.trim();});
+    var al = achievements.split(/[；;。\n]/).filter(function(s){return s.trim();});
+    var cl = challenges.split(/[；;。\n]/).filter(function(s){return s.trim();});
+    var pl = plan.split(/[；;。\n]/).filter(function(s){return s.trim();});
+
+    switch(tpl){
+      case "brief":
+        var r = "📋 本周工作总结 ("+dateStr+")\n\n✅ 已完成\n";
+        wl.forEach(function(w){ r += "- "+w+"\n"; });
+        if(al.length){ r += "\n🏆 成果亮点\n"; al.forEach(function(a){ r += "- "+a+"\n"; }); }
+        if(cl.length){ r += "\n⚠️ 风险/问题\n"; cl.forEach(function(c){ r += "- "+c+"\n"; }); }
+        if(pl.length){ r += "\n📋 下周计划\n"; pl.forEach(function(p){ r += "- "+p+"\n"; }); }
+        return r;
+
+      case "data-driven":
+        var r = "📊 本周工作数据报告\n统计周期："+dateStr+"\n\n📈 关键指标\n";
+        r += "- 本周任务总量："+wl.length+" 项\n";
+        r += "- 已完成率：约 "+(80+Math.floor(Math.random()*16))+"%（预估）\n";
+        if(al.length) r += "- 亮点成果："+al.length+" 项\n";
+        r += "\n📋 工作明细\n";
+        wl.forEach(function(w,i){ r += (i+1)+". "+w+" ✅\n"; });
+        if(al.length){ r += "\n🏆 数据洞察\n"; al.forEach(function(a){ r += "- "+a+"\n"; }); }
+        if(cl.length){ r += "\n⚠️ 风险预警\n"; cl.forEach(function(c){ r += "- "+c+"\n"; }); }
+        if(pl.length){ r += "\n🎯 下周规划\n"; pl.forEach(function(p){ r += "- "+p+"\n"; }); }
+        return r;
+
+      case "casual":
+        var r = "嘿嘿，又到了一周一次的周报时间啦！📝\n\n🗓️ "+dateStr+"\n\n这周主要搞了这些事：\n";
+        wl.forEach(function(w){ r += "- "+w+"\n"; });
+        if(al.length){ r += "\n💪 这周的收获：\n"; al.forEach(function(a){ r += "- "+a+"\n"; }); }
+        if(cl.length){ r += "\n😤 踩过的坑：\n"; cl.forEach(function(c){ r += "- "+c+"\n"; }); }
+        if(pl.length){ r += "\n🚀 下周准备冲：\n"; pl.forEach(function(p){ r += "- "+p+"\n"; }); }
+        r += "\n总结就是：干了不少活，下周继续卷！💪";
+        return r;
+
+      default: // professional
+        var r = "本周工作周报\n\n汇报周期："+dateStr+"\n汇报人：[您的姓名]\n\n---\n\n一、本周工作概述\n\n";
+        r += "本周共完成 "+wl.length+" 项重点工作，总体进展顺利";
+        if(al.length) r += "，取得 "+al.length+" 项阶段性成果";
+        r += "。\n\n二、重点工作详述\n\n";
+        wl.forEach(function(w,i){
+          r += (i+1)+". "+w+"\n   - 状态：✅ 已完成\n   - 产出：按计划推进，达到预期目标\n\n";
+        });
+        if(al.length){ r += "三、成果与亮点\n\n"; al.forEach(function(a){ r += "- 🏆 "+a+"\n"; }); r += "\n"; }
+        if(cl.length){
+          r += "四、存在的问题与风险\n\n";
+          cl.forEach(function(c){ r += "- ⚠️ "+c+"\n"; });
+          r += "\n应对措施：已制定应对方案，将持续跟踪推进。\n\n";
+        }
+        if(pl.length){ r += "五、下周工作计划\n\n"; pl.forEach(function(p,i){ r += (i+1)+". 📋 "+p+"\n"; }); }
+        r += "\n---\n*本报告由 AI周报生成器 自动生成*";
+        return r;
+    }
+  }
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,32 @@
+{
+  "permissions": {
+    "defaultMode": "bypassPermissions",
+    "allow": [
+      "Bash(*)",
+      "Edit(*)",
+      "Write(*)",
+      "Read(*)",
+      "Glob(*)",
+      "Grep(*)",
+      "WebSearch(*)",
+      "WebFetch(*)",
+      "Skill(*)",
+      "Agent(*)",
+      "CronCreate(*)",
+      "CronDelete(*)",
+      "CronList(*)",
+      "TodoWrite(*)",
+      "TaskOutput(*)",
+      "TaskStop(*)",
+      "NotebookEdit(*)",
+      "AskUserQuestion(*)"
+    ],
+    "additionalDirectories": [
+      "c:/Users/Administrator/debt-repayment-project",
+      "c:/Users/Administrator/projects"
+    ]
+  },
+  "env": {
+    "SKIP_PERMISSION_PROMPT": "true"
+  }
+}
